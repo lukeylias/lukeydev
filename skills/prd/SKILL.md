@@ -7,15 +7,13 @@ description: Turn conversation context into a PRD saved as prd.md.
 
 When this skill is activated, start your response with `🪨 Using skill: prd`.
 
-This skill takes the current conversation context and codebase understanding and produces a PRD. Do not conduct a discovery interview — synthesize from existing context. A single confirmation step (module check) is fine.
+This skill is designed to be invoked automatically at the end of a `shape` session. It takes the resolved decisions and shared understanding from the shape and produces a PRD. Do not conduct a discovery interview or re-confirm decisions that were just made.
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Focus on areas relevant to the stated goal — don't try to read everything.
+1. Synthesise the resolved decisions from the shape session into the PRD template below. Use any codebase understanding already established during the shape — do not re-explore unless something is genuinely unclear.
 
-2. Sketch out the major modules you will need to build or modify to complete the implementation. Check with the user that these modules match their expectations.
-
-3. Write the PRD using the template below and save it as `prd.md` in the project root. If `prd.md` already exists, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
+2. Write the PRD using the template below and save it as `prd.md` in the project root. If `prd.md` already exists, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
 
 ## Template
 
@@ -64,16 +62,16 @@ A description of the things that are out of scope for this PRD.
 (Optional) Any further notes about the feature. Omit if nothing to add.
 ```
 
-## Errors
-
-- If there's no conversation context or stated goal to synthesize from, stop and ask the user what feature to write a PRD for.
-- If the goal is too vague to produce meaningful user stories, stop and suggest using the `grill` skill first.
-
 ## Rules
 
-- **Do not conduct a discovery interview.** Synthesize from what you already know — the conversation and the codebase. The module confirmation step is the only back-and-forth.
-- **Check modules first.** Before writing the full PRD, list the major modules and confirm with the user.
+- **Do not conduct a discovery interview.** The shape session already produced the decisions — synthesize directly from that.
+- **Do not re-confirm modules or decisions.** Everything was resolved in the shape session. Move straight to writing.
 - **User stories must be extensive.** Cover every aspect of the feature. More is better.
 - **No file paths or code snippets** in the PRD. They go stale fast.
 - **Save as `prd.md`** in the project root.
-- **Offer to explain.** After saving the PRD, ask: "Do you want me to explain?" If the user says yes, invoke the `explain` skill to read the PRD aloud.
+
+## After saving
+
+1. Tell the user the PRD is saved and suggest they run `/skill:review prd` if they'd like a fresh review
+2. Ask: **"Do you want to iterate on the PRD before proceeding?"** Wait for the user to respond before doing anything else
+3. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill

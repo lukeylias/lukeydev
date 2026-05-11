@@ -35,7 +35,9 @@ Use when a chunk of work is ready for review.
    
    Example: URL `https://nibgroup.atlassian.net/browse/PHISL-2929` becomes `[PHISL-2929](https://nibgroup.atlassian.net/browse/PHISL-2929)` at the top of the description.
 
-6. **Generate the PR description.** Use this format:
+6. **Gather verification notes.** Review conversation context for evidence of testing (e.g. discussing results, confirming behaviour, pasting ACs and working through them). If testing is evident, synthesise plain bullet points describing what was verified. If no testing context exists, prompt the user: "Any verification you want to call out?" The user can skip if there's nothing to add. Bullets should be short, scannable, and conversational. Use backticks for code/UI elements. Edge cases tested outside ACs belong here too with a brief note (e.g. "Also verified empty state renders correctly (not covered by ACs)").
+
+7. **Generate the PR description.** Use this format:
 
 ```markdown
    [PHISL-2929](https://nibgroup.atlassian.net/browse/PHISL-2929)
@@ -45,6 +47,11 @@ Use when a chunk of work is ready for review.
    - Another bullet
    - Another bullet
    
+   ## Verification
+   - Verified X behaves correctly when Y
+   - Verified `component` renders in empty state
+   - Also verified Z (not covered by ACs)
+   
    ## Notes for reviewer
    - Anything worth flagging
 ```
@@ -52,15 +59,16 @@ Use when a chunk of work is ready for review.
    Rules:
    - Summary is always present, plain language, bullet list
    - Wrap code, function names, file paths, and component names in backticks
+   - Verification is **optional**: omit entirely if there's nothing to verify. Each bullet describes a specific thing tested. Align with ACs where possible.
    - Notes for reviewer is **optional**: include only if there's something genuinely worth flagging (architectural decision, tricky logic, follow-up work, known limitation). If nothing notable, omit the entire section.
    - Summary bullets should use past tense ("Added X", "Updated Y", "Changed Z"), not present tense — the PR describes completed work
    - Jira link at the top, no preamble. Skip if no ticket.
 
-7. **Confirm with the user.** Show the title and description. Wait for approval, edits, or cancellation.
+8. **Confirm with the user.** Show the title and description. Wait for approval, edits, or cancellation.
 
-8. **Open the PR.** Use `gh pr create --title "<title>" --body "<body>"`. Default base branch is `main`. If the repo uses a different default (e.g. `develop`, `master`), ask the user once and remember the answer for that repo.
+9. **Open the PR.** Use `gh pr create --title "<title>" --body "<body>"`. Default base branch is `main`. If the repo uses a different default (e.g. `develop`, `master`), ask the user once and remember the answer for that repo.
 
-9. **Confirm to the user.** Print the PR URL: `✓ Opened PR: <url>`
+10. **Confirm to the user.** Print the PR URL: `✓ Opened PR: <url>`
 
 ## Rules
 

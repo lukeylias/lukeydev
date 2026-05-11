@@ -16,7 +16,7 @@ When this skill is activated, start your response with `🪨 Using skill: commit
 3. If changes are already staged, commit those. If nothing is staged, show the user the unstaged changes and ask what to include. **Don't stage untracked files** unless the user confirms they should be included in this commit — the default assumption is that untracked files are excluded
 4. If `.gitignore` is missing or doesn't cover common patterns (`.env`, `node_modules`, build output), flag gaps to the user. **This is a blocker** — resolve any `.gitignore` gaps with the user before proceeding to stage and commit. Don't move past this step until it's handled
 5. Group changes into logical units — one coherent change per commit, stage selectively if needed. If a commit message would need "and" to describe two different kinds of change, that's a signal to split
-6. Scan the diff for obvious issues: syntax errors, debug code, stray TODOs. Run lint or tests if the repo has known commands
+6. Run lint or tests if the repo has known commands. Ask: **"Proceed with commit, or fix first?"** before moving on
 7. Confirm the commit message with the user before committing — skip for single-file trivial changes (typo fixes, version bumps)
 
 ## Commit Message Format
