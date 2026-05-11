@@ -13,7 +13,9 @@ This skill is designed to be invoked automatically at the end of a `shape` sessi
 
 1. Synthesise the resolved decisions from the shape session into the PRD template below. Use any codebase understanding already established during the shape — do not re-explore unless something is genuinely unclear.
 
-2. Write the PRD using the template below and save it as `prd.md` in the project root. If `prd.md` already exists, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
+2. Sketch the major modules that will be built or modified to implement the feature. For each module, give it a name and describe its interface in one sentence. Actively look for opportunities to make modules **deep** — small, simple interfaces with substantial functionality hidden behind them (the opposite of shallow modules with lots of surface area but little behind them). Present the sketch to the user and ask: "Do these modules match your expectations? Any you'd carve up differently?" Wait for confirmation before proceeding.
+
+3. Write the PRD using the template below and save it as `prd.md` in the project root. If `prd.md` already exists, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
 
 ## Template
 
@@ -37,10 +39,11 @@ Example:
 
 1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
 
+## Modules
+A list of the major modules to be built or modified. For each, give its name and a one-sentence description of its interface. Keep it short — no code, no file paths.
+
 ## Implementation Decisions
 A list of implementation decisions that were made. This can include:
-- The modules that will be built/modified
-- The interfaces of those modules that will be modified
 - Technical clarifications from the developer
 - Architectural decisions
 - Schema changes
@@ -65,7 +68,8 @@ A description of the things that are out of scope for this PRD.
 ## Rules
 
 - **Do not conduct a discovery interview.** The shape session already produced the decisions — synthesize directly from that.
-- **Do not re-confirm modules or decisions.** Everything was resolved in the shape session. Move straight to writing.
+- **Sketch modules before writing the template. Confirm with the user before proceeding.**
+- **Do not re-confirm decisions** that were already resolved in the shape session. The module sketch is the only confirmation step — everything else moves straight to writing.
 - **User stories must be extensive.** Cover every aspect of the feature. More is better.
 - **No file paths or code snippets** in the PRD. They go stale fast.
 - **Save as `prd.md`** in the project root.
