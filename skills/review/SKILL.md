@@ -36,24 +36,26 @@ Review whatever the user points you at with fresh eyes. Surface issues, not prai
 
 ## Output Format
 
-For each file reviewed, output a file path header followed by a table. One table per file. Order rows by severity (Critical first, then Warning, then Nit).
+Present findings as a single markdown table ordered by severity (Critical first, then Important, then Nit). Within a severity, order by file then line number.
 
-Review: <target>
+| Severity | File:Line | Finding | Why it matters |
+|----------|-----------|---------|----------------|
+| Critical | prd.md:24 | "Quickly" is ambiguous | Could mean 1 sec or 1 min, can't test |
+| Important | prd.md:31 | Empty state not specified | Edge case will surface during build |
+| Nit | prd.md:36 | Line count is implementation detail | Unnecessary constraint |
 
-path/to/file
+- **Severity** uses only three values: `Critical`, `Important`, `Nit`
+- **File:Line** uses the format `filename:line` (e.g. `prd.md:24`). For findings about the whole document with no specific line, use `—` (em-dash)
+- **Finding** is a one-sentence description. If a finding needs more detail, keep the table row brief and add an expanded explanation in a `## Detail` section below the table, referenced by line number
+- **Why it matters** is one short sentence on impact
 
-#    Severity    Lines    Description
-1    Critical    42–58    No signal defined for identifying the recommendation — ambiguous phrasing will fail silently
-2    Warning    12–15    Relationship between components never explained
-3    Nit    34    Term undefined — behaviour when mid-typing not specified
-
-1-2 sentence summary: overall assessment and the single most important thing to fix.
-
-- **Critical** — will break something or cause data loss
-- **Warning** — likely to cause problems, smells, or is confusing
-- **Nit** — style, naming, minor improvements
+After the table, write 1–2 sentences: overall assessment and the single most important thing to fix.
 
 If there are no issues, say so — but be skeptical first.
+
+- **Critical** — will break something or cause data loss
+- **Important** — likely to cause problems, smells, or is confusing
+- **Nit** — minor; low priority
 
 ## Rules
 
