@@ -11,6 +11,16 @@ Turn a PRD, spec, or clear goal into a phased plan. The output is `plan.md` in t
 
 Skip planning for one-line changes, typos, or obvious fixes — unless the user explicitly asks for a plan.
 
+## Step 0: Resolve the project root
+
+Before writing any output file, determine the correct project root:
+
+1. Run `git rev-parse --show-toplevel` and capture the output.
+2. If it succeeds, use that path as the project root.
+3. If it fails (not a git repo), use the directory the session was started in.
+4. Never write to `~/.pi/agent` or any path inside it. If the resolved path matches the agent's installation directory, stop and ask the user where to save instead.
+5. State the resolved path to the user before writing: "Saving plan.md to `<resolved-path>`."
+
 ## Input
 
 1. If `prd.md` exists, use it as the source of truth
@@ -23,7 +33,7 @@ Skip planning for one-line changes, typos, or obvious fixes — unless the user 
 1. Read the source document and any relevant source files
 2. Scan for existing conventions: `AGENTS.md`, `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, or similar. Note any relevant patterns (framework, style, testing, routing, naming) in the plan's Context section
 3. Break the work into **vertical slices**. Each phase is a thin end-to-end pass that cuts through all layers (schema, API, logic, UI, tests) — not a horizontal slice of one layer. Each phase should deliver something demoable or verifiable on its own.
-4. Write `plan.md` in the project root using the format below
+4. Write `plan.md` in the project root resolved in Step 0. The full path should be `<resolved-path>/plan.md`.
 5. **Tell the user the plan is ready for review.** Done.
 
 ## Plan format

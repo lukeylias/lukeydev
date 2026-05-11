@@ -9,13 +9,23 @@ When this skill is activated, start your response with `🪨 Using skill: prd`.
 
 This skill is designed to be invoked automatically at the end of a `shape` session. It takes the resolved decisions and shared understanding from the shape and produces a PRD. Do not conduct a discovery interview or re-confirm decisions that were just made.
 
+## Step 0: Resolve the project root
+
+Before writing any output file, determine the correct project root:
+
+1. Run `git rev-parse --show-toplevel` and capture the output.
+2. If it succeeds, use that path as the project root.
+3. If it fails (not a git repo), use the directory the session was started in.
+4. Never write to `~/.pi/agent` or any path inside it. If the resolved path matches the agent's installation directory, stop and ask the user where to save instead.
+5. State the resolved path to the user before writing: "Saving prd.md to `<resolved-path>`."
+
 ## Process
 
 1. Synthesise the resolved decisions from the shape session into the PRD template below. Use any codebase understanding already established during the shape — do not re-explore unless something is genuinely unclear.
 
 2. Sketch the major modules that will be built or modified to implement the feature. For each module, give it a name and describe its interface in one sentence. Actively look for opportunities to make modules **deep** — small, simple interfaces with substantial functionality hidden behind them (the opposite of shallow modules with lots of surface area but little behind them). Present the sketch to the user and ask: "Do these modules match your expectations? Any you'd carve up differently?" Wait for confirmation before proceeding.
 
-3. Write the PRD using the template below and save it as `prd.md` in the project root. If `prd.md` already exists, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
+3. Write the PRD using the template below and save it as `prd.md` in the project root resolved in Step 0. The full path should be `<resolved-path>/prd.md`. If `prd.md` already exists at that path, show the user and ask whether to overwrite or save as `prd-<topic>.md`.
 
 ## Template
 
@@ -72,7 +82,7 @@ A description of the things that are out of scope for this PRD.
 - **Do not re-confirm decisions** that were already resolved in the shape session. The module sketch is the only confirmation step — everything else moves straight to writing.
 - **User stories must be extensive.** Cover every aspect of the feature. More is better.
 - **No file paths or code snippets** in the PRD. They go stale fast.
-- **Save as `prd.md`** in the project root.
+- **Save as `prd.md`** in the project root resolved in Step 0.
 
 ## After saving
 
