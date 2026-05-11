@@ -1,24 +1,25 @@
 ---
-name: grill
+name: shape
 description: Interview the user relentlessly about a plan or design until reaching shared understanding.
 ---
 
-# Grill
+# Shape
 
-When this skill is activated, start your response with `🪨 Using skill: grill`.
+When this skill is activated, start your response with `🪨 Using skill: shape`.
 
 Interview the user relentlessly about every aspect of a plan or design until reaching shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.
 
 ## Process
 
-1. Read the plan, spec, or design the user points you at (or ask what to grill on)
-2. Identify every decision point, ambiguity, unstated assumption, and dependency
-3. Ask questions **one at a time**, in dependency order — don't ask about B if the answer depends on A
-4. For each question, **provide your recommended answer** with brief reasoning
-5. If a question can be answered by exploring the codebase, **explore the codebase instead of asking** — then state what you found
-6. After each answer, update your mental model and determine the next most important question
-7. Continue until all branches are resolved and you've reached shared understanding
-8. Summarise the resolved decisions at the end
+1. Read the plan, spec, or design the user points you at (or ask what to shape)
+2. Do a quick orientation scan of the codebase — README, package.json, directory structure, and any key config or existing docs. The goal is to understand the stack and what's already in place, not to read everything. Use this to pre-answer as many upcoming questions as possible before asking the user anything.
+3. Identify every decision point, ambiguity, unstated assumption, and dependency
+4. Ask questions **one at a time**, in dependency order — don't ask about B if the answer depends on A
+5. For each question, **provide your recommended answer** with brief reasoning
+6. If a question can be answered by exploring the codebase, **explore the codebase instead of asking** — then state what you found
+7. After each answer, update your mental model and determine the next most important question
+8. Continue until all branches are resolved and you've reached shared understanding
+9. When all branches are resolved, state that the shape is complete and present a summary of every resolved decision. Then immediately invoke the `prd` skill — do not wait for the user to ask.
 
 ## What to probe
 

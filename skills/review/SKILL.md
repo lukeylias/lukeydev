@@ -21,7 +21,7 @@ Review whatever the user points you at with fresh eyes. Surface issues, not prai
 ## Process
 
 1. **Resolve the target** and read it. If the file doesn't exist, stop and tell the user.
-2. **Understand the context.** If reviewing a single file, scan imports and related files to understand how it fits. If reviewing a diff, read the surrounding code for context.
+2. **Understand the context.** If reviewing code (a single file or diff), scan imports and related files to understand how it fits. If reviewing a document (PRD, plan, spec), the document itself is the context — don't explore the codebase.
 3. **Review with fresh eyes.** Assume you know nothing about this project beyond what you can read right now. Look for:
    - Bugs and logic errors
    - Edge cases not handled
@@ -36,23 +36,24 @@ Review whatever the user points you at with fresh eyes. Surface issues, not prai
 
 ## Output Format
 
-```
-## Review: <target>
+For each file reviewed, output a file path header followed by a table. One table per file. Order rows by severity (Critical first, then Warning, then Nit).
 
-### Issues
-- 🔴 **Critical:** [description] — [why it matters]
-- 🟡 **Warning:** [description] — [why it matters]
-- 🔵 **Nit:** [description] — [suggestion]
+Review: <target>
 
-### Summary
-[1-2 sentences: overall assessment and the single most important thing to fix]
-```
+path/to/file
+
+#    Severity    Lines    Description
+1    Critical    42–58    No signal defined for identifying the recommendation — ambiguous phrasing will fail silently
+2    Warning    12–15    Relationship between components never explained
+3    Nit    34    Term undefined — behaviour when mid-typing not specified
+
+1-2 sentence summary: overall assessment and the single most important thing to fix.
 
 - **Critical** — will break something or cause data loss
 - **Warning** — likely to cause problems, smells, or is confusing
 - **Nit** — style, naming, minor improvements
 
-If there are no issues at a level, omit that level. If everything looks good, say so — but be skeptical first.
+If there are no issues, say so — but be skeptical first.
 
 ## Rules
 
@@ -62,7 +63,7 @@ If there are no issues at a level, omit that level. If everything looks good, sa
 - **Explain why.** Every issue needs a reason. "Missing null check on `user.email` — will throw if the user signed up via SSO without an email."
 - **Don't rewrite.** Point out problems, don't fix them. The user decides what to act on.
 - **Proportional depth.** A 10-line diff gets a quick scan. A 500-line file gets a thorough review.
-- **Offer to explain.** After printing the review, ask: "Do you want me to explain?" If the user says yes, invoke the `explain` skill to read the review aloud.
+- **Human checkpoint.** After presenting findings, always stop and ask the user which issues to address. Never act on findings automatically.
 
 ## Errors
 
