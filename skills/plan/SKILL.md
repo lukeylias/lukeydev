@@ -11,6 +11,16 @@ Turn a PRD, spec, or clear goal into a phased plan. The output is `plan.md` in t
 
 Skip planning for one-line changes, typos, or obvious fixes — unless the user explicitly asks for a plan.
 
+## Step 0: Resolve the project root
+
+Before writing any output file, determine the correct project root:
+
+1. Run `git rev-parse --show-toplevel` and capture the output.
+2. If it succeeds, use that path as the project root.
+3. If it fails (not a git repo), use the directory the session was started in.
+4. Never write to `~/.pi/agent` or any path inside it. If the resolved path matches the agent's installation directory, stop and ask the user where to save instead.
+5. State the resolved path to the user before writing: "Saving plan.md to `<resolved-path>`."
+
 ## Input
 
 1. If `prd.md` exists, use it as the source of truth
@@ -23,7 +33,7 @@ Skip planning for one-line changes, typos, or obvious fixes — unless the user 
 1. Read the source document and any relevant source files
 2. Scan for existing conventions: `AGENTS.md`, `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, or similar. Note any relevant patterns (framework, style, testing, routing, naming) in the plan's Context section
 3. Break the work into **vertical slices**. Each phase is a thin end-to-end pass that cuts through all layers (schema, API, logic, UI, tests) — not a horizontal slice of one layer. Each phase should deliver something demoable or verifiable on its own.
-4. Write `plan.md` in the project root using the format below
+4. Write `plan.md` in the project root resolved in Step 0. The full path should be `<resolved-path>/plan.md`.
 5. **Tell the user the plan is ready for review.** Done.
 
 ## Plan format
@@ -71,8 +81,8 @@ Keep them short, practical, and tied to what the plan actually delivers.
 
 ## After saving
 
-1. Tell the user the plan is saved and suggest they run `/skill:review plan` if they'd like a fresh review
-2. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else
+1. Immediately invoke the `review` subagent in spawn mode. If `prd.md` exists, use this task: *"Review the plan at [path to plan.md] against the PRD at [path to prd.md]. Focus on: phase ordering (does any phase depend on a later phase, or leave the system in a broken intermediate state?), hidden coupling (are there code paths or render branches the plan misses, especially fallback/wrapped/edge cases?), untestable phases (every phase needs a clear 'done when' criterion), risky or irreversible steps without rollback notes, scope creep (phases adding behaviour not in the PRD), and missing verification (phases that change behaviour with no test point). Do not rewrite the plan. Flag issues with file:line references where possible. Critical means 'would cause a broken intermediate state or miss requirements.' Important means 'would cause rework.' Proportional depth: if the artefact is short or simple, your review should be short. Don't manufacture findings. No findings is a valid review result."* If `prd.md` does not exist, use the same task but omit the 'against the PRD' clause and the scope-creep focus point, and tell the user the scope-creep check was skipped because no `prd.md` was found. Present the subagent's findings to the user exactly as returned — do not interpret, summarise, or act on them.
+2. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else.
 3. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill
 
 ## Errors
