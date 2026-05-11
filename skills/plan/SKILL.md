@@ -81,8 +81,8 @@ Keep them short, practical, and tied to what the plan actually delivers.
 
 ## After saving
 
-1. Tell the user the plan is saved and suggest they run `/skill:review plan` if they'd like a fresh review
-2. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else
+1. Immediately invoke the `review` subagent in spawn mode. If `prd.md` exists, use this task: *"Review the plan at [path to plan.md] against the PRD at [path to prd.md]. Focus on: phase ordering (does any phase depend on a later phase, or leave the system in a broken intermediate state?), hidden coupling (are there code paths or render branches the plan misses, especially fallback/wrapped/edge cases?), untestable phases (every phase needs a clear 'done when' criterion), risky or irreversible steps without rollback notes, scope creep (phases adding behaviour not in the PRD), and missing verification (phases that change behaviour with no test point). Do not rewrite the plan. Flag issues with file:line references where possible. Critical means 'would cause a broken intermediate state or miss requirements.' Important means 'would cause rework.' Proportional depth: if the artefact is short or simple, your review should be short. Don't manufacture findings. No findings is a valid review result."* If `prd.md` does not exist, use the same task but omit the 'against the PRD' clause and the scope-creep focus point, and tell the user the scope-creep check was skipped because no `prd.md` was found. Present the subagent's findings to the user exactly as returned — do not interpret, summarise, or act on them.
+2. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else.
 3. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill
 
 ## Errors

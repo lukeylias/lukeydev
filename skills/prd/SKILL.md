@@ -86,6 +86,6 @@ A description of the things that are out of scope for this PRD.
 
 ## After saving
 
-1. Tell the user the PRD is saved and suggest they run `/skill:review prd` if they'd like a fresh review
-2. Ask: **"Do you want to iterate on the PRD before proceeding?"** Wait for the user to respond before doing anything else
+1. Immediately invoke the `review` subagent in spawn mode with the following task: *"Review the PRD at [path to prd.md]. Focus on: ambiguity (words or requirements that could be interpreted multiple ways), missing context (assumptions from the shape session that didn't make it onto the page), unstated dependencies between decisions, scope gaps (edge cases, empty states, error states not addressed), acceptance criteria that aren't testable, and in-scope vs out-of-scope confusion. Do not flag style preferences. Do not suggest implementation. Only flag things that would cause a planning agent or developer to ask 'wait, what does this mean?' Proportional depth: if the artefact is short or simple, your review should be short. Don't manufacture findings. No findings is a valid review result."* Present the subagent's findings to the user exactly as returned — do not interpret, summarise, or act on them.
+2. Ask: **"Do you want to iterate on the PRD before proceeding?"** Wait for the user to respond before doing anything else.
 3. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill
