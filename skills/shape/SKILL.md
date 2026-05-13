@@ -33,6 +33,34 @@ Interview the user relentlessly about every aspect of a plan or design until rea
 - Things that sound simple but aren't
 - Things that were left unsaid
 
+## Question format
+
+Every question must be presented in this exact format — output it as plain text, no markdown syntax, no code blocks, no heading symbols:
+
+🪨 Shape question N · Topic
+
+Question
+- <Ask one concrete decision question.>
+
+Recommendation
+- <State the recommended answer.>
+
+Why
+- <Briefly explain the reasoning.>
+
+Options
+1. <Recommended option> ← Recommended
+2. <Alternative option>
+3. <Alternative option>
+
+Reply with a number, or type your own answer.
+
+- `N` is the sequential question number (1, 2, 3, …)
+- `Topic` is a short 2–4 word label for the decision area
+- Always list the recommended option first, marked with ← Recommended
+- Include 2–4 options total (add more only when clearly warranted)
+- End every question block with the "Reply with a number…" prompt — no exceptions
+
 ## Rules
 
 - **One question at a time.** Never batch questions.
