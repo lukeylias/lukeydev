@@ -19,7 +19,7 @@ Interview the user relentlessly about every aspect of a plan or design until rea
 6. If a question can be answered by exploring the codebase, **invoke the `scout` subagent again instead of asking** — then state what you found
 7. After each answer, update your mental model and determine the next most important question
 8. Continue until all branches are resolved and you've reached shared understanding
-9. When all branches are resolved, state that the shape is complete and present a summary of every resolved decision. Then immediately invoke the `prd` skill — do not wait for the user to ask.
+9. When all branches are resolved, state that the shape is complete and present a full summary of every resolved decision. Then tell the user: "Say **build** when ready to run the automation loop."
 
 ## What to probe
 
