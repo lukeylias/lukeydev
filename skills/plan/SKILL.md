@@ -47,6 +47,7 @@ The generated `plan.md` should follow this structure:
 - `## Phases` — one section per phase, structure below
 - `## Assumptions and risks` — short list, only what affects phasing
 - `## Testing` — plain-English one-liners the user can use to verify the work once it's been built
+- `## After implementation` — reminder to run `/skill:review` against the full implementation diff
 
 Each phase section contains:
 
@@ -55,7 +56,7 @@ Each phase section contains:
 - `**User stories:**` which user stories from the PRD this phase covers (if source is a PRD, otherwise omit)
 - `**Files:**` specific paths
 - `**Steps:**` bullet list of concrete tasks
-- `**Done when:**` checklist of observable criteria — always includes `- [ ] Run /skill:review diff — no critical issues before proceeding to next phase`
+- `**Done when:**` checklist of observable criteria
 - `**Re-plan if:**` conditions that invalidate this phase
 
 ## Testing section format
@@ -79,11 +80,22 @@ Keep them short, practical, and tied to what the plan actually delivers.
 - **One phase can be enough.** Don't pad with artificial phases. Small work deserves small plans.
 - **Do not execute the plan.** This skill produces `plan.md` and nothing else.
 
+## After implementation section format
+
+The `## After implementation` section should contain a single prompt:
+
+> Once all phases are complete, run `/skill:review diff` to catch implementation issues, accessibility gaps, and missed requirements.
+
 ## After saving
 
-1. Immediately invoke the `review` subagent in spawn mode. If `prd.md` exists, use this task: *"Review the plan at [path to plan.md] against the PRD at [path to prd.md]. Focus on: phase ordering (does any phase depend on a later phase, or leave the system in a broken intermediate state?), hidden coupling (are there code paths or render branches the plan misses, especially fallback/wrapped/edge cases?), untestable phases (every phase needs a clear 'done when' criterion), risky or irreversible steps without rollback notes, scope creep (phases adding behaviour not in the PRD), and missing verification (phases that change behaviour with no test point). Do not rewrite the plan. Flag issues with file:line references where possible. Critical means 'would cause a broken intermediate state or miss requirements.' Important means 'would cause rework.' Proportional depth: if the artefact is short or simple, your review should be short. Don't manufacture findings. No findings is a valid review result."* If `prd.md` does not exist, use the same task but omit the 'against the PRD' clause and the scope-creep focus point, and tell the user the scope-creep check was skipped because no `prd.md` was found. Present the subagent's findings to the user exactly as returned — do not interpret, summarise, or act on them.
-2. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else.
-3. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill
+**⚠️ Do not auto-fix any findings from the review. Do not act on them. Present and stop.**
+
+1. **On first save only** (i.e., when the plan is being created for the first time in this session): immediately invoke the `review` subagent in spawn mode. If `prd.md` exists, use this task: *"Review the plan at [path to plan.md] against the PRD at [path to prd.md]. Focus on: phase ordering (does any phase depend on a later phase, or leave the system in a broken intermediate state?), hidden coupling (are there code paths or render branches the plan misses, especially fallback/wrapped/edge cases?), untestable phases (every phase needs a clear 'done when' criterion), risky or irreversible steps without rollback notes, scope creep (phases adding behaviour not in the PRD), and missing verification (phases that change behaviour with no test point). Do not rewrite the plan. Flag issues with file:line references where possible. Critical means 'would cause a broken intermediate state or miss requirements.' Important means 'would cause rework.' Proportional depth: if the artefact is short or simple, your review should be short. Don't manufacture findings. No findings is a valid review result."* If `prd.md` does not exist, use the same task but omit the 'against the PRD' clause and the scope-creep focus point, and tell the user the scope-creep check was skipped because no `prd.md` was found. Present the subagent's findings to the user exactly as returned. **After presenting findings, stop and wait for the user's explicit instruction. Do not interpret. Do not fix. Do not continue with prior tasks until the user directs you.**
+2. If the user iterates on the plan and saves again, do **not** re-trigger the review automatically. If the user wants a fresh review after iteration, they can ask explicitly via `/skill:review`.
+3. Ask: **"Do you want to iterate on the plan before proceeding?"** Wait for the user to respond before doing anything else.
+4. Once the user is satisfied, offer to explain: "Do you want me to explain?" — if yes, invoke the `explain` skill
+
+**⚠️ Do not auto-fix any findings from the review. Do not act on them. Present and stop.**
 
 ## Errors
 
